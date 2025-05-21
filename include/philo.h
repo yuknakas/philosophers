@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/21 16:21:20 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:39:52 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ int		ph_error_input(char *error_str, char *sub_str);
 //utils
 int		ft_isspace(int c);
 int		ft_isdigit(int c);
+int		ph_destroy_data(t_data *data);
 
 #endif
