@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/21 09:23:17 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:14:03 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,13 @@ typedef struct s_philo
 
 //functions
 
-//errors
-int	ph_error_input(char *error_str, char *sub_str);
+//initalize s_data
+int		ph_init_gen_data(int ac, char **av, t_data *gen_data);
 
+
+//errors
+int		ph_error_input(char *error_str, char *sub_str);
+//utils
+int		ft_isspace(int c);
 
 #endif

@@ -1,38 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   02_init.c                                          :+:      :+:    :+:   */
+/*   11_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 09:14:27 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/21 12:17:56 by yuknakas         ###   ########.fr       */
+/*   Created: 2025/05/21 12:10:40 by yuknakas          #+#    #+#             */
+/*   Updated: 2025/05/21 12:13:45 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	ph_init_gen_data(int ac, char **av, t_data *gen_data)
+int	ft_isspace(int c)
 {
-	if (ac != 5 && ac != 6)
-		return (ph_error_input(STR_USG, STR_PRG_NAME));
-	return (0);
-}
-
-static int	_ptr_atoui(unsigned int *dest, char *src)
-{
-	int	sign;
-
-	while (ft_isspace(*src))
-		src++;
-	sign = 1;
-	while (*src == '+' || *src == '-')
-	{
-		if (*src == '-')
-			sign *= -1;
-		src++;
-	}
-	if (sign == -1)
-		return (ph_error_input(STR_UINT_ERR, STR_PRG_NAME));
-	return (0);
+	c = (char)c;
+	return (c == ' ' || ('t' <= c && c <= 'r'));
 }
