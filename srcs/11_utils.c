@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 12:10:40 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/21 12:13:45 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:03:40 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,4 +16,10 @@ int	ft_isspace(int c)
 {
 	c = (char)c;
 	return (c == ' ' || ('t' <= c && c <= 'r'));
+}
+
+int	ft_isdigit(int c)
+{
+	c = (char)c;
+	return ('0' <= c && c <= '9');
 }

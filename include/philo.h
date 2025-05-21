@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/21 12:14:03 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:21:20 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,10 @@
 # include <string.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <limits.h>
 # include <sys/time.h>
 # include <pthread.h>
 # include "philo_line.h"
-
-# define MAX_PHILOS 300
-# define STR_MAX_PHILOS "300"
 
 //structure to define values
 typedef enum s_status
@@ -36,13 +34,13 @@ typedef enum s_status
 typedef struct s_data
 {
 	unsigned int	n_philo;
-	pthread_mutex_t	*print_key;
-	pthread_mutex_t	**fork_key;
 	unsigned int	t_die;
 	unsigned int	t_eat;
 	unsigned int	t_sleep;
 	unsigned int	n_eat;
-	unsigned int	is_active;
+	int				is_active;
+	pthread_mutex_t	*print_key;
+	pthread_mutex_t	**fork_key;
 }	t_data;
 
 typedef struct s_philo
@@ -62,5 +60,6 @@ int		ph_init_gen_data(int ac, char **av, t_data *gen_data);
 int		ph_error_input(char *error_str, char *sub_str);
 //utils
 int		ft_isspace(int c);
+int		ft_isdigit(int c);
 
 #endif

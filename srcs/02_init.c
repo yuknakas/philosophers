@@ -6,33 +6,59 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:14:27 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/21 12:17:56 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:28:44 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
+static int	_atoui_p(unsigned int *dest, char *str);
+
 int	ph_init_gen_data(int ac, char **av, t_data *gen_data)
 {
 	if (ac != 5 && ac != 6)
 		return (ph_error_input(STR_USG, STR_PRG_NAME));
+	if (_atoui_p(gen_data->n_philo, av[1])
+		|| _atoui_p(gen_data->t_die, av[2])
+		|| _atoui_p(gen_data->t_eat, av[3])
+		|| _atoui_p(gen_data->t_sleep, av[4]))
+		return (1);
+	if (ac == 6)
+		if (_atoui_p(gen_data->n_eat, av[5]))
+			return (1);
 	return (0);
 }
 
-static int	_ptr_atoui(unsigned int *dest, char *src)
+static int	_atoui_p(unsigned int *dest, char *str)
 {
-	int	sign;
-
-	while (ft_isspace(*src))
-		src++;
-	sign = 1;
-	while (*src == '+' || *src == '-')
+	while (ft_isspace(*str))
+		str++;
+	*dest = 0;
+	while (*str == '+' || *str == '-')
 	{
-		if (*src == '-')
-			sign *= -1;
-		src++;
+		if (*str == '-')
+			(*dest)++;
+		str++;
 	}
-	if (sign == -1)
+	if (*dest % 2)
+		return (ph_error_input(STR_UINT_ERR, STR_PRG_NAME));
+	*dest = 0;
+	while (ft_isdigit(*str))
+	{
+		if (*dest > (UINT_MAX - (*str - '0')) / 10)
+			return (ph_error_input(STR_UINT_ERR, STR_PRG_NAME));
+		*dest = *dest * 10 + (*str - '0');
+		str++;
+	}
+	if (*str)
 		return (ph_error_input(STR_UINT_ERR, STR_PRG_NAME));
 	return (0);
+}
+
+static int	_make_init_mutex(pthread_mutex_t *mutex)
+{
+	mutex = malloc(sizeof(pthread_mutex_t));
+	if (!mutex)
+		return (ph_error_input(STR_MALLOC_ERR, STR_PRG_NAME));
+	return (pthread_mutex_init(mutex, NULL));
 }
