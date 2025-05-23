@@ -6,12 +6,13 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:14:27 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/23 11:46:05 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/05/23 12:07:15 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
+int			ph_init_gen_data(int ac, char **av, t_data *gen_data);
 static int	_atoui_p(unsigned int *dest, char *str);
 static int	_init_data_mutex(int ac, t_data *gen_data);
 static int	_init_philos(t_data *gen_data);
@@ -26,9 +27,13 @@ int	ph_init_gen_data(int ac, char **av, t_data *gen_data)
 		|| _atoui_p(gen_data->t_eat, av[3])
 		|| _atoui_p(gen_data->t_sleep, av[4]))
 		return (1);
+	gen_data->consider_eat = NO;
 	if (ac == 6)
+	{
 		if (_atoui_p(gen_data->n_eat, av[5]))
 			return (1);
+		gen_data->consider_eat = YES;
+	}
 	if (_init_data_mutex(ac, gen_data) || _init_philos(gen_data))
 		return (1);
 	gen_data->is_dead = 0;
@@ -104,7 +109,9 @@ static int	_philo_make(t_data *gen_data, t_philo *philo, int nb_philo)
 	philo->id_philo = nb_philo;
 	philo->fork[0] = (nb_philo - (nb_philo % 2)) % gen_data->n_philo;
 	philo->fork[1] = (nb_philo + (nb_philo % 2 - 1)) % gen_data->n_philo;
-	if (pthread_mutex_init(&philo->last_meal_key, NULL))
+	philo->meal_count = 0;
+	if (pthread_mutex_init(&philo->meal_count_key, NULL)
+		|| pthread_mutex_init(&philo->last_meal_key, NULL))
 		return (1);
 	philo->data = gen_data;
 	return (0);

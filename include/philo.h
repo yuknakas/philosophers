@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/23 11:43:12 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/05/23 12:06:02 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_data
 	unsigned int	t_eat;
 	unsigned int	t_sleep;
 	unsigned int	n_eat;
+	int				consider_eat;
 	int				is_dead;
 	pthread_mutex_t	print_key;
 	pthread_mutex_t	death_key;
@@ -50,6 +51,8 @@ typedef struct s_philo
 {
 	unsigned int	id_philo;
 	unsigned int	fork[2];
+	unsigned int	meal_count;
+	pthread_mutex_t	meal_count_key;
 	pthread_mutex_t	last_meal_key;
 	time_t			last_meal;
 	t_data			*data;
@@ -68,5 +71,7 @@ int		ph_error_input(char *error_str, char *sub_str);
 int		ft_isspace(int c);
 int		ft_isdigit(int c);
 int		ph_destroy_data(t_data *data);
+//time
+time_t	ph_time_in_ms(void);
 
 #endif
