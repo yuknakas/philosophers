@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/23 10:25:30 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/05/23 10:47:18 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_data
 	pthread_mutex_t	print_key;
 	pthread_mutex_t	death_key;
 	pthread_mutex_t	*fork_key;
-	t_philo			**all_philos;
+	t_philo			*all_philos;
 	time_t			start_time;
 }	t_data;
 
@@ -50,6 +50,7 @@ typedef struct s_philo
 {
 	int				id_philo;
 	pthread_mutex_t	fork[2];
+	pthread_mutex_t	last_meal_key;
 	time_t			last_meal;
 	t_data			*data;
 }	t_philo;
