@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   02_init.c                                          :+:      :+:    :+:   */
+/*   02_init_data.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:14:27 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/21 16:55:16 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/05/23 10:30:23 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int	_atoui_p(unsigned int *dest, char *str);
 static int	_init_data_mutex(int ac, t_data *gen_data);
-static int	_make_init_mutex(pthread_mutex_t *mutex);
 
 int	ph_init_gen_data(int ac, char **av, t_data *gen_data)
 {
@@ -30,6 +29,7 @@ int	ph_init_gen_data(int ac, char **av, t_data *gen_data)
 			return (1);
 	if (_init_data_mutex(ac, gen_data))
 		return (1);
+	gen_data->is_dead = 0;
 	return (0);
 }
 
@@ -63,35 +63,22 @@ static int	_init_data_mutex(int ac, t_data *gen_data)
 {
 	unsigned int	i;
 
-	if (_make_init_mutex(gen_data->print_key))
-		return (1);
+	if (pthread_mutex_init(&gen_data->print_key, NULL))
+		return (ph_destroy_data(gen_data));
+	if (pthread_mutex_init(&gen_data->death_key, NULL))
+		return (ph_destroy_data(gen_data));
 	i = 0;
-	gen_data->fork_key = malloc((gen_data->n_philo + 1)
-			* sizeof(pthread_mutex_t *));
+	gen_data->fork_key = malloc((gen_data->n_philo) * sizeof(pthread_mutex_t));
 	if (!gen_data->fork_key)
 	{
-		free(gen_data->print_key);
+		ph_destroy_data(gen_data);
 		return (ph_error_input(STR_MALLOC_ERR, STR_PRG_NAME));
 	}
 	while (i < gen_data->n_philo)
 	{
-		if (_make_init_mutex((gen_data->fork_key)[i]))
+		if (pthread_mutex_init(&(gen_data->fork_key[i]), NULL))
 			return (ph_destroy_data(gen_data));
 		i++;
-	}
-	gen_data->fork_key[i] = NULL;
-	return (0);
-}
-
-static int	_make_init_mutex(pthread_mutex_t *mutex)
-{
-	mutex = malloc(sizeof(pthread_mutex_t));
-	if (!mutex)
-		return (ph_error_input(STR_MALLOC_ERR, STR_PRG_NAME));
-	if (pthread_mutex_init(mutex, NULL))
-	{
-		free(mutex);
-		return (1);
 	}
 	return (0);
 }

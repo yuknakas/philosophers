@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 12:10:40 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/21 16:54:38 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/05/23 10:33:04 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,14 @@ int	ph_destroy_data(t_data *data)
 {
 	int	i;
 
-	if (data->print_key)
-	{
-		pthread_mutex_destroy(data->print_key);
-		free(data->print_key);
-	}
-	i = 0;
+	pthread_mutex_destroy(&data->print_key);
+	pthread_mutex_destroy(&data->death_key);
 	if (!data->fork_key)
 		return (1);
-	while (data->fork_key[i])
+	i = 0;
+	while (&data->fork_key[i])
 	{
-		pthread_mutex_destroy(data->fork_key[i]);
-		free(data->fork_key[i]);
+		pthread_mutex_destroy(&data->fork_key[i]);
 		i++;
 	}
 	free(data->fork_key);
