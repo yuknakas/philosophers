@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:14:27 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/23 10:30:23 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/05/23 11:46:05 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int	_atoui_p(unsigned int *dest, char *str);
 static int	_init_data_mutex(int ac, t_data *gen_data);
+static int	_init_philos(t_data *gen_data);
+static int	_philo_make(t_data *gen_data, t_philo *philo, int nb_philo);
 
 int	ph_init_gen_data(int ac, char **av, t_data *gen_data)
 {
@@ -27,7 +29,7 @@ int	ph_init_gen_data(int ac, char **av, t_data *gen_data)
 	if (ac == 6)
 		if (_atoui_p(gen_data->n_eat, av[5]))
 			return (1);
-	if (_init_data_mutex(ac, gen_data))
+	if (_init_data_mutex(ac, gen_data) || _init_philos(gen_data))
 		return (1);
 	gen_data->is_dead = 0;
 	return (0);
@@ -64,21 +66,46 @@ static int	_init_data_mutex(int ac, t_data *gen_data)
 	unsigned int	i;
 
 	if (pthread_mutex_init(&gen_data->print_key, NULL))
-		return (ph_destroy_data(gen_data));
+		return (1);
 	if (pthread_mutex_init(&gen_data->death_key, NULL))
-		return (ph_destroy_data(gen_data));
+		return (1);
 	i = 0;
 	gen_data->fork_key = malloc((gen_data->n_philo) * sizeof(pthread_mutex_t));
 	if (!gen_data->fork_key)
-	{
-		ph_destroy_data(gen_data);
 		return (ph_error_input(STR_MALLOC_ERR, STR_PRG_NAME));
-	}
 	while (i < gen_data->n_philo)
 	{
 		if (pthread_mutex_init(&(gen_data->fork_key[i]), NULL))
-			return (ph_destroy_data(gen_data));
+			return (1);
 		i++;
 	}
+	return (0);
+}
+
+static int	_init_philos(t_data *gen_data)
+{
+	int	i;
+
+	gen_data->all_philos = malloc((gen_data->n_philo + 1) * sizeof(t_philo));
+	if (!gen_data->all_philos)
+		return (1);
+	i = 1;
+	while (i < gen_data->n_philo + 1)
+	{
+		if (_philo_make(gen_data, &gen_data->all_philos[i], i))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static int	_philo_make(t_data *gen_data, t_philo *philo, int nb_philo)
+{
+	philo->id_philo = nb_philo;
+	philo->fork[0] = (nb_philo - (nb_philo % 2)) % gen_data->n_philo;
+	philo->fork[1] = (nb_philo + (nb_philo % 2 - 1)) % gen_data->n_philo;
+	if (pthread_mutex_init(&philo->last_meal_key, NULL))
+		return (1);
+	philo->data = gen_data;
 	return (0);
 }
