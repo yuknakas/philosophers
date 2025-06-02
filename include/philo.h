@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/23 12:06:02 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:31:53 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,13 @@
 //structure to define values
 typedef enum s_status
 {
-	YES	= 1,
-	NO	= 0
+	NO			=	0,
+	YES			=	1,
+	TAKE_FORK	=	2,
+	EAT			=	3,
+	SLEEP		=	4,
+	THINK		=	5,
+	DEAD		=	6,
 }	t_status;
 
 //structure for overall data
@@ -55,6 +60,7 @@ typedef struct s_philo
 	pthread_mutex_t	meal_count_key;
 	pthread_mutex_t	last_meal_key;
 	time_t			last_meal;
+	pthread_t		thread_id;
 	t_data			*data;
 }	t_philo;
 
@@ -64,14 +70,21 @@ typedef struct s_philo
 int		main(int ac, char **av);
 
 //initalize s_data
-int		ph_init_gen_data(int ac, char **av, t_data *gen_data);
+int		ph_init_all(int ac, char **av, t_data *gen_data);
+
+//print
+int		ph_print_status(t_philo *philo, t_status status, pthread_mutex_t *mutex);
+
 //errors
 int		ph_error_input(char *error_str, char *sub_str);
+
 //utils
 int		ft_isspace(int c);
 int		ft_isdigit(int c);
 int		ph_destroy_data(t_data *data);
+
 //time
-time_t	ph_time_in_ms(void);
+time_t	ph_get_time_in_ms(void);
+time_t	ph_time_since_start(time_t start_time);
 
 #endif

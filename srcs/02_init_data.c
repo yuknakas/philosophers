@@ -6,19 +6,19 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:14:27 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/23 12:07:15 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:07:03 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int			ph_init_gen_data(int ac, char **av, t_data *gen_data);
+int			ph_init_all(int ac, char **av, t_data *gen_data);
 static int	_atoui_p(unsigned int *dest, char *str);
 static int	_init_data_mutex(int ac, t_data *gen_data);
 static int	_init_philos(t_data *gen_data);
 static int	_philo_make(t_data *gen_data, t_philo *philo, int nb_philo);
 
-int	ph_init_gen_data(int ac, char **av, t_data *gen_data)
+int	ph_init_all(int ac, char **av, t_data *gen_data)
 {
 	if (ac != 5 && ac != 6)
 		return (ph_error_input(STR_USG, STR_PRG_NAME));
@@ -37,6 +37,7 @@ int	ph_init_gen_data(int ac, char **av, t_data *gen_data)
 	if (_init_data_mutex(ac, gen_data) || _init_philos(gen_data))
 		return (1);
 	gen_data->is_dead = 0;
+	gen_data->start_time = ph_get_time_in_ms() + 100;
 	return (0);
 }
 

@@ -6,16 +6,21 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:57:38 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/05/23 12:01:02 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:53:17 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-time_t	ph_time_in_ms(void)
+time_t	ph_get_time_in_ms(void)
 {
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+time_t	ph_time_since_start(time_t start_time)
+{
+	return (ph_get_time_in_ms() - start_time);
 }
