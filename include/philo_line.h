@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 10:31:22 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/02 15:58:16 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/03 12:10:12 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 # define STR_PRG_NAME "./philo:"
 # define STR_USG "how to use %s ./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
-# define STR_UINT_ERR "incorrect input for %s values must be in the unsigned \
-int range (0 - 4294967295)\n"
+
 
 //status messages
 # define STR_TAKE_FORK "has taken a fork"
@@ -28,5 +27,8 @@ int range (0 - 4294967295)\n"
 
 //standard errors
 # define STR_MALLOC_ERR "%s error with malloc"
+# define STR_UINT_ERR "incorrect input for %s values must be in the unsigned \
+int range (0 - 4294967295)\n"
+# define STR_MUTEX_ERR "error in %s failed to initialize mutex\n"
 
 #endif

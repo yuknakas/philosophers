@@ -6,18 +6,59 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:12:02 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/02 14:59:30 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/03 12:06:00 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
+int			main(int ac, char **av);
+static int	_make_threads(t_data *gen_data);
+static int	_join_threads(t_data *gen_data);
+
 int	main(int ac, char **av)
 {
 	t_data	gen_data;
-	
+
 	if (ph_init_all(ac, av, &gen_data))
-		return (ph_destroy_data(&gen_data));
+		return (1);
+	_make_threads(&gen_data);
+	_join_threads(&gen_data);
+	ph_destroy_data(&gen_data);
+	return (0);
 }
 
+static int	_make_threads(t_data *gen_data)
+{
+	int	i;
 
+	i = 0;
+	if (gen_data->n_philo == 1)
+	{
+		if (pthread_create(&gen_data->all_philos[i].thread_id, NULL,
+				ph_lone_philo, &gen_data->all_philos[i]))
+			return (1);
+	}
+	while (i < gen_data->n_philo)
+	{
+		if (pthread_create(&gen_data->all_philos[i].thread_id, NULL,
+				ph_philo, &gen_data->all_philos[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static int	_join_threads(t_data *gen_data)
+{
+	int	i;
+
+	i = 0;
+	while (i < gen_data->n_philo)
+	{
+		if (pthread_join(gen_data->all_philos[i].thread_id, NULL))
+			return (1);
+		i++;
+	}
+	return (0);
+}

@@ -1,32 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   12_time.c                                          :+:      :+:    :+:   */
+/*   04_killer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/23 11:57:38 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/03 09:13:35 by yuknakas         ###   ########.fr       */
+/*   Created: 2025/06/03 10:36:12 by yuknakas          #+#    #+#             */
+/*   Updated: 2025/06/03 10:36:18 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-time_t	ph_get_time_in_ms(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-}
-
-time_t	ph_time_since_start(time_t start_time)
-{
-	return (ph_get_time_in_ms() - start_time);
-}
-
-void	ph_wait_until(time_t start_time)
-{
-	while (ph_get_time_in_ms() < start_time)
-		continue ;
-}

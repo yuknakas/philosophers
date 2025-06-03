@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/02 16:31:53 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/03 12:05:47 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ typedef enum s_status
 }	t_status;
 
 //structure for overall data
+typedef struct s_philo t_philo;
+
+
 typedef struct s_data
 {
 	unsigned int	n_philo;
@@ -72,6 +75,10 @@ int		main(int ac, char **av);
 //initalize s_data
 int		ph_init_all(int ac, char **av, t_data *gen_data);
 
+//philos
+void	*ph_philo(void *arg);
+void	*ph_lone_philo(void *arg);
+
 //print
 int		ph_print_status(t_philo *philo, t_status status, pthread_mutex_t *mutex);
 
@@ -86,5 +93,6 @@ int		ph_destroy_data(t_data *data);
 //time
 time_t	ph_get_time_in_ms(void);
 time_t	ph_time_since_start(time_t start_time);
+void	ph_wait_until(time_t start_time);
 
 #endif
