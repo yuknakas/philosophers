@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 10:31:22 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/03 12:10:12 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:16:12 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 
 //standard errors
 # define STR_MALLOC_ERR "%s error with malloc"
-# define STR_UINT_ERR "incorrect input for %s values must be in the unsigned \
+# define STR_UINT_ERR "incorrect input for %s <number of philosopers> must \
+be in the int rage.\nOther values must be in the unsigned \
 int range (0 - 4294967295)\n"
 # define STR_MUTEX_ERR "error in %s failed to initialize mutex\n"
 

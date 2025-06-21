@@ -6,20 +6,17 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:21:04 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/03 12:14:37 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/21 15:56:11 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	ph_print_status(t_philo *philo, t_status status, pthread_mutex_t *mutex_addr)
+int	ph_print_status(t_philo *philo, t_status status)
 {
-	pthread_mutex_lock(mutex_addr);
-	if (philo->data->is_dead)
-	{
-		pthread_mutex_unlock(mutex_addr);
+	if (ph_check_sim_stop(philo->data, NO))
 		return (1);
-	}
+	pthread_mutex_lock(&philo->data->print_key);
 	if (status == TAKE_FORK)
 		printf("%lu %d %s\n", ph_time_since_start(philo->data->start_time),
 			philo->id_philo, STR_TAKE_FORK);
@@ -35,6 +32,6 @@ int	ph_print_status(t_philo *philo, t_status status, pthread_mutex_t *mutex_addr
 	else if (status == DEAD)
 		printf("%lu %d %s\n", ph_time_since_start(philo->data->start_time),
 			philo->id_philo, STR_DEAD);
-	pthread_mutex_unlock(mutex_addr);
+	pthread_mutex_unlock(&philo->data->print_key);
 	return (0);
 }

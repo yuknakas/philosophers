@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/03 12:05:47 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:22:05 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ typedef struct s_data
 	unsigned int	t_sleep;
 	unsigned int	n_eat;
 	int				consider_eat;
-	int				is_dead;
+	int				sim_stop;
+	pthread_mutex_t	sim_stop_key;
 	pthread_mutex_t	print_key;
-	pthread_mutex_t	death_key;
 	pthread_mutex_t	*fork_key;
 	t_philo			*all_philos;
 	time_t			start_time;
@@ -79,8 +79,11 @@ int		ph_init_all(int ac, char **av, t_data *gen_data);
 void	*ph_philo(void *arg);
 void	*ph_lone_philo(void *arg);
 
+//killer
+int		ph_check_sim_stop(t_data *data, int kill_switch);
+
 //print
-int		ph_print_status(t_philo *philo, t_status status, pthread_mutex_t *mutex);
+int		ph_print_status(t_philo *philo, t_status status);
 
 //errors
 int		ph_error_input(char *error_str, char *sub_str);

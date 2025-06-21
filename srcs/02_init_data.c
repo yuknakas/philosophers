@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:14:27 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/03 12:17:42 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:22:01 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ph_init_all(int ac, char **av, t_data *gen_data)
 			free(gen_data->all_philos);
 		return (1);
 	}
-	gen_data->is_dead = 0;
+	gen_data->sim_stop = 0;
 	gen_data->start_time = ph_get_time_in_ms() + 100;
 	return (0);
 }
@@ -79,7 +79,7 @@ static int	_init_data_mutex(int ac, t_data *gen_data)
 
 	if (pthread_mutex_init(&gen_data->print_key, NULL))
 		return (ph_error_input(STR_MUTEX_ERR, STR_PRG_NAME));
-	if (pthread_mutex_init(&gen_data->death_key, NULL))
+	if (pthread_mutex_init(&gen_data->sim_stop_key, NULL))
 		return (ph_error_input(STR_MUTEX_ERR, STR_PRG_NAME));
 	i = 0;
 	gen_data->fork_key = malloc((gen_data->n_philo) * sizeof(pthread_mutex_t));
