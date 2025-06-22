@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:12:02 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/21 16:21:38 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/22 15:06:04 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int ac, char **av)
 
 static int	_make_threads(t_data *gen_data)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
 	if (gen_data->n_philo == 1)
@@ -51,7 +51,7 @@ static int	_make_threads(t_data *gen_data)
 
 static int	_join_threads(t_data *gen_data)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
 	while (i < gen_data->n_philo)

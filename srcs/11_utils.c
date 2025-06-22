@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 12:10:40 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/21 16:18:58 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/22 15:06:57 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_isdigit(int c)
 
 int	ph_destroy_data(t_data *data)
 {
-	int	i;
+	unsigned int	i;
 
 	if (data->fork_key)
 	pthread_mutex_destroy(&data->print_key);

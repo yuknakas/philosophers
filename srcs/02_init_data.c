@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:14:27 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/21 16:22:01 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/22 15:06:22 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int			ph_init_all(int ac, char **av, t_data *gen_data);
 static int	_atoui_p(unsigned int *dest, char *str);
-static int	_init_data_mutex(int ac, t_data *gen_data);
+static int	_init_data_mutex(t_data *gen_data);
 static int	_init_philos(t_data *gen_data);
 static int	_philo_make(t_data *gen_data, t_philo *philo, int nb_philo);
 
@@ -34,7 +34,7 @@ int	ph_init_all(int ac, char **av, t_data *gen_data)
 			return (1);
 		gen_data->consider_eat = YES;
 	}
-	if (_init_data_mutex(ac, gen_data) || _init_philos(gen_data))
+	if (_init_data_mutex(gen_data) || _init_philos(gen_data))
 	{
 		if (gen_data->fork_key)
 			free(gen_data->fork_key);
@@ -73,7 +73,7 @@ int	_atoui_p(unsigned int *dest, char *str)
 	return (0);
 }
 
-static int	_init_data_mutex(int ac, t_data *gen_data)
+static int	_init_data_mutex(t_data *gen_data)
 {
 	unsigned int	i;
 
@@ -96,13 +96,13 @@ static int	_init_data_mutex(int ac, t_data *gen_data)
 
 static int	_init_philos(t_data *gen_data)
 {
-	int	i;
+	unsigned int	i;
 
 	gen_data->all_philos = malloc((gen_data->n_philo + 1) * sizeof(t_philo));
 	if (!gen_data->all_philos)
 		return (ph_error_input(STR_MALLOC_ERR, STR_PRG_NAME));
 	i = 1;
-	while (i < gen_data->n_philo + 1)
+	while (i <= gen_data->n_philo)
 	{
 		if (_philo_make(gen_data, &gen_data->all_philos[i - 1], i))
 			return (ph_error_input(STR_MUTEX_ERR, STR_PRG_NAME));
