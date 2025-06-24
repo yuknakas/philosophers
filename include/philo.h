@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/21 16:22:05 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:47:22 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_data
 	unsigned int	t_die;
 	unsigned int	t_eat;
 	unsigned int	t_sleep;
+	unsigned int	t_think;
 	unsigned int	n_eat;
 	int				consider_eat;
 	int				sim_stop;
@@ -53,12 +54,14 @@ typedef struct s_data
 	pthread_mutex_t	*fork_key;
 	t_philo			*all_philos;
 	time_t			start_time;
+	pthread_t		killer_id;
 }	t_data;
 
 typedef struct s_philo
 {
 	unsigned int	id_philo;
-	unsigned int	fork[2];
+	pthread_mutex_t	*fork1;
+	pthread_mutex_t	*fork2;
 	unsigned int	meal_count;
 	pthread_mutex_t	meal_count_key;
 	pthread_mutex_t	last_meal_key;
@@ -80,6 +83,7 @@ void	*ph_philo(void *arg);
 void	*ph_lone_philo(void *arg);
 
 //killer
+void	*ph_killer(void *arg);
 int		ph_check_sim_stop(t_data *data, int kill_switch);
 
 //print

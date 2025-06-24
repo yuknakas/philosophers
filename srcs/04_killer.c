@@ -6,14 +6,15 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 10:36:12 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/21 16:24:13 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/22 21:16:09 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
 int			ph_check_sim_stop(t_data *data, int kill_switch);
-static void	_check_end_condition(t_data *data);
+void		*ph_killer(void *arg);
+static int	_check_end_condition(t_data *data);
 
 int	ph_check_sim_stop(t_data *data, int kill_switch)
 {
@@ -27,7 +28,24 @@ int	ph_check_sim_stop(t_data *data, int kill_switch)
 	return (record);
 }
 
-static void	_check_end_condition(t_data *data)
+void	*ph_killer(void *arg)
+{
+	t_data	*data;
+
+	data = arg;
+	if (data->n_eat == 0)
+		return (NULL);
+	ph_wait_until(data->start_time);
+	while (1)
+	{
+		if (_check_end_condition(data))
+			break ;
+		usleep(100);
+	}
+	return (NULL);
+}
+
+static int	_check_end_condition(t_data *data)
 {
 	t_philo			*current_philo;
 	unsigned int	i;
@@ -44,7 +62,7 @@ static void	_check_end_condition(t_data *data)
 			ph_print_status(current_philo, DEAD);
 			ph_check_sim_stop(data, YES);
 			pthread_mutex_unlock(&current_philo->last_meal_key);
-			return;
+			return (1);
 		}
 		pthread_mutex_unlock(&current_philo->last_meal_key);
 		if (!(data->consider_eat && current_philo->meal_count > data->n_eat))
@@ -53,4 +71,5 @@ static void	_check_end_condition(t_data *data)
 	}
 	if (all_full == YES)
 		ph_check_sim_stop(data, YES);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:14:27 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/22 15:06:22 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/24 15:08:58 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,13 @@ static int	_init_data_mutex(t_data *gen_data)
 		return (ph_error_input(STR_MUTEX_ERR, STR_PRG_NAME));
 	if (pthread_mutex_init(&gen_data->sim_stop_key, NULL))
 		return (ph_error_input(STR_MUTEX_ERR, STR_PRG_NAME));
-	i = 0;
 	gen_data->fork_key = malloc((gen_data->n_philo) * sizeof(pthread_mutex_t));
 	if (!gen_data->fork_key)
 		return (ph_error_input(STR_MALLOC_ERR, STR_PRG_NAME));
+	i = 0;
 	while (i < gen_data->n_philo)
 	{
-		if (pthread_mutex_init(&(gen_data->fork_key[i]), NULL))
+		if (pthread_mutex_init(&gen_data->fork_key[i], NULL))
 			return (ph_error_input(STR_MUTEX_ERR, STR_PRG_NAME));
 		i++;
 	}
@@ -108,14 +108,22 @@ static int	_init_philos(t_data *gen_data)
 			return (ph_error_input(STR_MUTEX_ERR, STR_PRG_NAME));
 		i++;
 	}
+	gen_data->t_think = gen_data->t_eat + gen_data->t_sleep;
+	if (gen_data->t_think > gen_data->t_die)
+		gen_data->t_think = 0;
+	else
+		gen_data->t_think = (gen_data->t_die - gen_data->t_think) / 2;
 	return (0);
 }
 
 static int	_philo_make(t_data *gen_data, t_philo *philo, int nb_philo)
 {
 	philo->id_philo = nb_philo;
-	philo->fork[0] = (nb_philo - (nb_philo % 2)) % gen_data->n_philo;
-	philo->fork[1] = (nb_philo + (nb_philo % 2 - 1)) % gen_data->n_philo;
+	philo->data = gen_data;
+	philo->fork1 = &philo->data->fork_key
+		[(nb_philo - (nb_philo % 2)) % gen_data->n_philo];
+	philo->fork2 = &philo->data->fork_key
+		[(nb_philo + (nb_philo % 2 - 1)) % gen_data->n_philo];
 	philo->meal_count = 0;
 	if (pthread_mutex_init(&philo->meal_count_key, NULL)
 		|| pthread_mutex_init(&philo->last_meal_key, NULL))

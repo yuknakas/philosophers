@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 12:10:40 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/22 15:06:57 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/24 15:26:56 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ int	ph_destroy_data(t_data *data)
 		i++;
 	}
 	free(data->fork_key);
+	free(data->all_philos);
 	return (1);
 }
