@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:14:27 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/24 15:08:58 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:31:52 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	ph_init_all(int ac, char **av, t_data *gen_data)
 			return (1);
 		gen_data->consider_eat = YES;
 	}
+	gen_data->start_time = ph_get_time_in_ms() + 100;
 	if (_init_data_mutex(gen_data) || _init_philos(gen_data))
 	{
 		if (gen_data->fork_key)
@@ -42,8 +43,7 @@ int	ph_init_all(int ac, char **av, t_data *gen_data)
 			free(gen_data->all_philos);
 		return (1);
 	}
-	gen_data->sim_stop = 0;
-	gen_data->start_time = ph_get_time_in_ms() + 100;
+	gen_data->sim_stop = NO;
 	return (0);
 }
 
@@ -98,7 +98,7 @@ static int	_init_philos(t_data *gen_data)
 {
 	unsigned int	i;
 
-	gen_data->all_philos = malloc((gen_data->n_philo + 1) * sizeof(t_philo));
+	gen_data->all_philos = malloc(gen_data->n_philo * sizeof(t_philo));
 	if (!gen_data->all_philos)
 		return (ph_error_input(STR_MALLOC_ERR, STR_PRG_NAME));
 	i = 1;
@@ -128,6 +128,6 @@ static int	_philo_make(t_data *gen_data, t_philo *philo, int nb_philo)
 	if (pthread_mutex_init(&philo->meal_count_key, NULL)
 		|| pthread_mutex_init(&philo->last_meal_key, NULL))
 		return (ph_error_input(STR_MUTEX_ERR, STR_PRG_NAME));
-	philo->data = gen_data;
+	philo->last_meal = gen_data->start_time;
 	return (0);
 }

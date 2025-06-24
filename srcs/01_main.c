@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:12:02 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/24 15:10:51 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:18:01 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	_make_threads(t_data *gen_data)
 			return (1);
 		i++;
 	}
-	if (pthread_create(&gen_data->killer_id, NULL, ph_killer, &gen_data))
+	if (pthread_create(&gen_data->killer_id, NULL, ph_killer, gen_data))
 		return (1);
 	return (0);
 }

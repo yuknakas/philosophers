@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:07:37 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/24 15:28:37 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:11:28 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	_eat_routine(t_philo *philo)
 	pthread_mutex_lock(&philo->last_meal_key);
 	philo->last_meal = ph_get_time_in_ms();
 	pthread_mutex_unlock(&philo->last_meal_key);
-	usleep(philo->data->t_eat);
+	usleep(philo->data->t_eat * 1000);
 	pthread_mutex_unlock(philo->fork1);
 	pthread_mutex_unlock(philo->fork2);
 	pthread_mutex_lock(&philo->meal_count_key);
@@ -60,11 +60,11 @@ static int	_sleep_think_routine(t_philo *philo)
 	if (ph_check_sim_stop(philo->data, NO))
 		return (1);
 	ph_print_status(philo, SLEEP);
-	usleep(philo->data->t_sleep);
+	usleep(philo->data->t_sleep * 1000);
 	if (ph_check_sim_stop(philo->data, NO))
 		return (1);
 	ph_print_status(philo, THINK);
-	usleep(philo->data->t_think);
+	usleep(philo->data->t_think * 1000);
 	return (0);
 }
 
