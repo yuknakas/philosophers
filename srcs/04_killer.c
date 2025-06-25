@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 10:36:12 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/24 16:32:26 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:07:13 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	ph_check_sim_stop(t_data *data, int kill_switch)
 void	*ph_killer(void *arg)
 {
 	t_data	*data;
-	
+
 	data = arg;
-	if (data->n_eat == 0)
+	if (data->consider_eat && data->n_eat == 0)
 		return (NULL);
 	ph_wait_until(data->start_time);
 	while (1)

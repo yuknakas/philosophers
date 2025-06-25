@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:21:04 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/21 15:56:11 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/24 22:16:48 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 int	ph_print_status(t_philo *philo, t_status status)
 {
-	if (ph_check_sim_stop(philo->data, NO))
-		return (1);
 	pthread_mutex_lock(&philo->data->print_key);
-	if (status == TAKE_FORK)
+	if (ph_check_sim_stop(philo->data, NO))
+	{
+		pthread_mutex_unlock(&philo->data->print_key);
+		return (1);
+	}
+	else if (status == TAKE_FORK)
 		printf("%lu %d %s\n", ph_time_since_start(philo->data->start_time),
 			philo->id_philo, STR_TAKE_FORK);
 	else if (status == EAT)

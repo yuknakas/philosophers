@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:14:27 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/24 16:31:52 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:07:25 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,10 @@ static int	_philo_make(t_data *gen_data, t_philo *philo, int nb_philo)
 {
 	philo->id_philo = nb_philo;
 	philo->data = gen_data;
-	philo->fork1 = &philo->data->fork_key
-		[(nb_philo - (nb_philo % 2)) % gen_data->n_philo];
-	philo->fork2 = &philo->data->fork_key
-		[(nb_philo + (nb_philo % 2 - 1)) % gen_data->n_philo];
+	philo->fork1 = &gen_data->fork_key
+	[(nb_philo - (nb_philo % 2)) % gen_data->n_philo];
+	philo->fork2 = &gen_data->fork_key
+	[(nb_philo + (nb_philo % 2 - 1)) % gen_data->n_philo];
 	philo->meal_count = 0;
 	if (pthread_mutex_init(&philo->meal_count_key, NULL)
 		|| pthread_mutex_init(&philo->last_meal_key, NULL))

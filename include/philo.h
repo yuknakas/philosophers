@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/24 14:47:22 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:05:42 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ typedef enum s_status
 }	t_status;
 
 //structure for overall data
-typedef struct s_philo t_philo;
-
+typedef struct s_philo	t_philo;
 
 typedef struct s_data
 {

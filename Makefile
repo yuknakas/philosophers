@@ -6,7 +6,7 @@
 #    By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 15:45:46 by yuknakas          #+#    #+#              #
-#    Updated: 2025/06/24 15:49:21 by yuknakas         ###   ########.fr        #
+#    Updated: 2025/06/25 18:12:48 by yuknakas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,11 +28,11 @@ $(NAME): $(OBJS_MAN)
 	@$(CCW) -c $< -o $@
 
 clean:
-	@rm $(OBJS_MAN)
+	@rm -f $(OBJS_MAN)
 	@echo "> Make clean executed in current directory"
 
 fclean: clean
-	@rm $(NAME)
+	@rm -f $(NAME)
 	@echo "> Make fclean executed in current directory"
 
 re: fclean all

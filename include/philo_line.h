@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 10:31:22 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/21 16:16:12 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:05:49 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # define STR_PRG_NAME "./philo:"
 # define STR_USG "how to use %s ./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
-
 
 //status messages
 # define STR_TAKE_FORK "has taken a fork"

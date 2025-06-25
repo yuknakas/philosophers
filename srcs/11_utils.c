@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 12:10:40 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/24 15:26:56 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:06:05 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ph_destroy_data(t_data *data)
 	unsigned int	i;
 
 	if (data->fork_key)
-	pthread_mutex_destroy(&data->print_key);
+		pthread_mutex_destroy(&data->print_key);
 	pthread_mutex_destroy(&data->sim_stop_key);
 	if (!data->fork_key)
 		return (1);

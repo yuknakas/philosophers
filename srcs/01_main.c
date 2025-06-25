@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:12:02 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/24 16:18:01 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/25 17:57:42 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static int	_make_threads(t_data *gen_data)
 	unsigned int	i;
 
 	i = 0;
+	if (gen_data->n_philo == 0)
+		return (0);
 	if (gen_data->n_philo == 1)
 	{
 		if (pthread_create(&gen_data->all_philos[i].thread_id, NULL,
@@ -63,7 +65,7 @@ static int	_join_threads(t_data *gen_data)
 			return (1);
 		i++;
 	}
-	if (gen_data->n_philo != 1)
+	if (gen_data->n_philo > 1)
 	{
 		if (pthread_join(gen_data->killer_id, NULL))
 			return (1);
