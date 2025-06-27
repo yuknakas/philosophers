@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:07:37 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/24 22:14:19 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/27 10:13:38 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	*ph_philo(void *arg)
 	if (philo->data->consider_eat && philo->data->n_eat == 0)
 		return (NULL);
 	ph_wait_until(philo->data->start_time);
+	if (!(philo->id_philo % 2))
+		usleep(1000);
 	while (1)
 	{
 		if (_eat_routine(philo) || _sleep_think_routine((philo)))
