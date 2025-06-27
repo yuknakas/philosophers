@@ -5,70 +5,50 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 09:12:02 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/27 10:50:06 by yuknakas         ###   ########.fr       */
+/*   Created: 2025/06/27 13:41:43 by yuknakas          #+#    #+#             */
+/*   Updated: 2025/06/27 16:03:27 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
-int			main(int ac, char **av);
-static int	_make_threads(t_data *gen_data);
-static int	_join_threads(t_data *gen_data);
+static int	_p_philos(t_data *data);
 
 int	main(int ac, char **av)
 {
-	t_data	gen_data;
-
-	if (ph_init_all(ac, av, &gen_data))
+	t_data		all_data;
+	pthread_t	tmp;
+	int			err_val;
+	
+	err_val = ph_init_all(&all_data, ac, av);
+	if (err_val == 2)
 		return (1);
-	_make_threads(&gen_data);
-	_join_threads(&gen_data);
-	ph_destroy_data(&gen_data);
+	if (err_val ==11)
+	{
+		ph_clean_all(&all_data);
+		return (1);
+	}
+	if (_p_philos(&all_data))
+		return (1);
+	pthread_create(&tmp, NULL, ph_check_all_full, &all_data);
+	pthread_detach(tmp);
+	ph_finish_simulation(&all_data);
 	return (0);
 }
 
-static int	_make_threads(t_data *gen_data)
+static int	_p_philos(t_data *data)
 {
 	unsigned int	i;
 
 	i = 0;
-	if (gen_data->n_philo == 0)
-		return (0);
-	if (gen_data->n_philo == 1)
+	while (i < data->n_philo)
 	{
-		if (pthread_create(&gen_data->all_philos[i].thread_id, NULL,
-				ph_lone_philo, &gen_data->all_philos[i]))
-			return (1);
-		return (0);
-	}
-	while (i < gen_data->n_philo)
-	{
-		if (pthread_create(&gen_data->all_philos[i].thread_id, NULL,
-				ph_philo, &gen_data->all_philos[i]))
-			return (1);
+		data->all_philos[i].process_id = fork();
+		if (data->all_philos[i].process_id == -1)
+			ph_error_input(STR_FORK_ERR, STR_PRG_NAME);
+		if (data->all_philos[i].process_id == 0)
+			ph_philo(&data->all_philos[i]);
 		i++;
-	}
-	if (pthread_create(&gen_data->killer_id, NULL, ph_killer, gen_data))
-		return (1);
-	return (0);
-}
-
-static int	_join_threads(t_data *gen_data)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (i < gen_data->n_philo)
-	{
-		if (pthread_join(gen_data->all_philos[i].thread_id, NULL))
-			return (1);
-		i++;
-	}
-	if (gen_data->n_philo > 1)
-	{
-		if (pthread_join(gen_data->killer_id, NULL))
-			return (1);
 	}
 	return (0);
 }

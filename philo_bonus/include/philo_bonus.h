@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/27 11:22:57 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:56:48 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,12 @@
 # include <stdlib.h>
 # include <limits.h>
 # include <sys/time.h>
+# include <sys/stat.h>
+# include <pthread.h>
 # include <semaphore.h>
-# include "philo_line.h"
+# include <fcntl.h>
+# include <signal.h>
+# include "philo_line_bon.h"
 
 //structure to define values
 typedef enum s_status
@@ -47,23 +51,23 @@ typedef struct s_data
 	unsigned int	t_think;
 	unsigned int	n_eat;
 	int				consider_eat;
-	sem_t			sim_stop_key;
-	sem_t			print_key;
-	sem_t			fork_key;
+	sem_t			*sem_print;
+	sem_t			*sem_fork;
+	sem_t			*sem_full;
+	sem_t			*sem_end;
 	t_philo			*all_philos;
 	time_t			start_time;
-	pid_t			killer_id;
 }	t_data;
 
 typedef struct s_philo
 {
+	t_data			*data;
 	unsigned int	id_philo;
 	unsigned int	meal_count;
-	sem_t			meal_count_key;
-	sem_t			last_meal_key;
+	sem_t			*sem_n_meal;
 	time_t			last_meal;
-	pid_t			thread_id;
-	t_data			*data;
+	sem_t			*sem_t_meal;
+	pid_t			process_id;
 }	t_philo;
 
 //functions
@@ -71,19 +75,19 @@ typedef struct s_philo
 //main
 int		main(int ac, char **av);
 
-//initalize s_data
-int		ph_init_all(int ac, char **av, t_data *gen_data);
+//init
+int		ph_init_all(t_data *all_data, int ac, char **av);
 
 //philos
-void	*ph_philo(void *arg);
-void	*ph_lone_philo(void *arg);
+int		ph_philo(t_philo *philo);
 
-//killer
-void	*ph_killer(void *arg);
-int		ph_check_sim_stop(t_data *data, int kill_switch);
+//finish
+void	*ph_check_all_full(void *arg);
+void	ph_finish_simulation(t_data *data);
+void 	ph_clean_all(t_data *data);
 
 //print
-int		ph_print_status(t_philo *philo, t_status status);
+void	ph_print_status(t_philo *philo, t_status status);
 
 //errors
 int		ph_error_input(char *error_str, char *sub_str);
@@ -91,7 +95,6 @@ int		ph_error_input(char *error_str, char *sub_str);
 //utils
 int		ft_isspace(int c);
 int		ft_isdigit(int c);
-int		ph_destroy_data(t_data *data);
 
 //time
 time_t	ph_get_time_in_ms(void);
