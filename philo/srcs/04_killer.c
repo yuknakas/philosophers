@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 10:36:12 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/27 11:05:22 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/27 11:32:50 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,6 @@ static int	_check_end_condition(t_data *data)
 		current_philo++;
 	}
 	if (all_full == YES)
-		ph_check_sim_stop(data, YES);
+		return (ph_check_sim_stop(data, YES));
 	return (0);
 }
