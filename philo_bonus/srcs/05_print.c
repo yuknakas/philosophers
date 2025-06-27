@@ -6,11 +6,11 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:21:04 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/24 22:16:48 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/27 10:50:29 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "../include/philo_bonus.h"
 
 int	ph_print_status(t_philo *philo, t_status status)
 {

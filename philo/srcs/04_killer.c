@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 10:36:12 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/25 18:07:13 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/06/27 11:05:22 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ static int	_check_end_condition(t_data *data)
 		pthread_mutex_lock(&current_philo->last_meal_key);
 		if ((ph_get_time_in_ms() - current_philo->last_meal) > data->t_die)
 		{
-			ph_print_status(current_philo, DEAD);
 			ph_check_sim_stop(data, YES);
+			ph_print_status(current_philo, DEAD);
 			pthread_mutex_unlock(&current_philo->last_meal_key);
 			return (1);
 		}
