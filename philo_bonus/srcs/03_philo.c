@@ -5,109 +5,45 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/27 14:35:25 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/27 15:54:59 by yuknakas         ###   ########.fr       */
+/*   Created: 2025/08/15 00:41:25 by yuknakas          #+#    #+#             */
+/*   Updated: 2025/08/15 07:17:29 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
-int			ph_philo(t_philo *philo);
-static int	_eat_routine(t_philo *philo);
-static int	_sleep_think_routine(t_philo *philo);
-static void	*_check_death(void *arg);
-static void	*_check_full(void *arg);
+int	ph_philo(t_philo *philo);
 
 int	ph_philo(t_philo *philo)
 {
-	pthread_t	tmp;
-
-	if (philo->data->consider_eat && philo->data->n_eat == 0)
+	if (philo->data->n_philo == 1)
+	{
+		ph_wait_until(philo->data->start_time);
+		ph_print_status(philo, TAKE_FORK);
+		ph_wait_until(philo->data->start_time + philo->data->t_die);
 		return (0);
-	if (pthread_create(&tmp, NULL, _check_death, philo))
-		return (ph_error_input(STR_THREAD_ERR, STR_PRG_NAME));
-	pthread_detach(tmp);
-	if (philo->data->consider_eat)
-	{
-		if (pthread_create(&tmp, NULL, _check_full, philo))
-			return (ph_error_input(STR_THREAD_ERR, STR_PRG_NAME));
-		pthread_detach(tmp);
 	}
 	ph_wait_until(philo->data->start_time);
-	if (!(philo->id_philo % 2))
-		usleep(1000);
-	while (1)
+	usleep(philo->id_philo % 2 * 1000);
+	while (!sim_alive(philo->data))
 	{
-		if (_eat_routine(philo) || _sleep_think_routine((philo)))
-			break ;
+		eating(philo);
+		if (philo->meal_count == philo->data->n_eat)
+			return (0);
+		sleeping(philo);
+		thinking(philo);
 	}
-	exit(0);
+	return (1);
 }
 
-static int	_eat_routine(t_philo *philo)
+int	sim_alive(t_data *data)
 {
-	sem_wait(philo->data->sem_fork);
-	ph_print_status(philo, TAKE_FORK);
-	sem_wait(philo->data->sem_fork);
-	ph_print_status(philo, TAKE_FORK);
-	ph_print_status(philo, EAT);
-	sem_wait(philo->sem_t_meal);
-	philo->last_meal = ph_get_time_in_ms();
-	sem_post(philo->sem_t_meal);
-	usleep(philo->data->t_eat * 1000);
-	sem_post(philo->data->sem_fork);
-	sem_post(philo->data->sem_fork);
-	sem_wait(philo->sem_n_meal);
-	if (philo->data->consider_eat && philo->meal_count != UINT_MAX)
-		philo->meal_count++;
-	sem_post(philo->sem_n_meal);
-	return (0);
-}
-
-static int	_sleep_think_routine(t_philo *philo)
-{
-	ph_print_status(philo, SLEEP);
-	usleep(philo->data->t_sleep * 1000);
-	ph_print_status(philo, THINK);
-	usleep(philo->data->t_think * 1000);
-	return (0);
-}
-
-static void	*_check_death(void *arg)
-{
-	t_philo	*philo;
-
-	philo = arg;
-	ph_wait_until(philo->data->start_time);
-	while (1)
+	sem_wait(data->sem_stop_meal);
+	if (*(int *)data->sem_is_dead)
 	{
-		sem_wait(philo->sem_t_meal);
-		if (ph_get_time_in_ms() - philo->last_meal >= philo->data->t_die)
-		{
-			ph_print_status(philo, DEAD);
-			sem_post(philo->data->sem_end);
-			return (NULL);
-		}
-		sem_post(philo->sem_t_meal);
+		sem_post(data->sem_stop_meal);
+		return (YES);
 	}
-	return (NULL);
-}
-
-static void	*_check_full(void *arg)
-{
-	t_philo	*philo;
-
-	philo = arg;
-	ph_wait_until(philo->data->start_time);
-	while (1)
-	{
-		sem_wait(philo->sem_n_meal);
-		if (philo->meal_count >= philo->data->n_eat)
-		{
-			sem_post(philo->data->sem_full);
-			return (NULL);
-		}
-		sem_post(philo->sem_n_meal);
-	}
-	return (NULL);
+	sem_post(data->sem_stop_meal);
+	return (NO);
 }

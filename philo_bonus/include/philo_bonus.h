@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/08/14 15:30:05 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/08/15 07:16:06 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <fcntl.h>
 # include <signal.h>
 # include "philo_line_bon.h"
+# include <sys/wait.h>
 
 //structure to define values
 typedef enum s_status
@@ -50,11 +51,12 @@ typedef struct s_data
 	unsigned int	t_sleep;
 	unsigned int	t_think;
 	unsigned int	n_eat;
-	int				consider_eat;
+	int				stop_meal;
+	sem_t			*sem_stop_meal;
 	sem_t			*sem_print;
 	sem_t			*sem_fork;
-	sem_t			*sem_full;
-	sem_t			*sem_end;
+	sem_t			*sem_meal_count;
+	sem_t			*sem_is_dead;
 	t_philo			*all_philos;
 	time_t			start_time;
 }	t_data;
@@ -64,10 +66,9 @@ typedef struct s_philo
 	t_data			*data;
 	unsigned int	id_philo;
 	unsigned int	meal_count;
-	sem_t			*sem_n_meal;
 	time_t			last_meal;
-	sem_t			*sem_t_meal;
 	pid_t			process_id;
+	pthread_t		checker_id;
 }	t_philo;
 
 //functions
@@ -80,12 +81,20 @@ int		ph_init_all(t_data *all_data, int ac, char **av);
 
 //philos
 int		ph_philo(t_philo *philo);
-int		name_sem_philo(char **dest_t, char **dest_n, unsigned int philo_id);
+
+// routine
+int		eating(t_philo *philo);
+void	sleeping(t_philo *philo);
+void	thinking(t_philo *philo);
+
+int		sim_alive(t_data *data);
+void	*check_starve(void *addr);
+int		start_simulation(t_data *data);
 
 //finish
 void	*ph_check_all_full(void *arg);
 void	ph_finish_simulation(t_data *data);
-void 	ph_clean_all(t_data *data);
+void	ph_clean_all(t_data *data);
 
 //print
 void	ph_print_status(t_philo *philo, t_status status);
