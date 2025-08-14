@@ -6,16 +6,16 @@
 #    By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 15:45:46 by yuknakas          #+#    #+#              #
-#    Updated: 2025/06/27 10:49:27 by yuknakas         ###   ########.fr        #
+#    Updated: 2025/08/14 15:28:08 by yuknakas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CCW			=	cc -Wall -Wextra -Werror
 NAME		=	philo_bonus
 
-SRCS_MAN	=	srcs/01_main.c srcs/02_init_data.c srcs/03_philo.c \
-				srcs/04_killer.c srcs/05_print.c srcs/10_error.c \
-				srcs/11_utils.c srcs/12_time.c
+SRCS_MAN	=	srcs/01_main.c srcs/02_init.c srcs/03_philo.c \
+				srcs/04_philo_sem.c srcs/05_finish.c srcs/06_print.c \
+				srcs/10_error.c srcs/11_utils.c srcs/12_time.c
 OBJS_MAN	=	$(SRCS_MAN:.c=.o)
 
 all: $(NAME)

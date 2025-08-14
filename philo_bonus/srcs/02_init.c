@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:41:59 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/27 16:00:21 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:32:40 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ph_init_all(t_data *all_data, int ac, char **av)
 		all_data->consider_eat = YES;
 	}
 	all_data->start_time = ph_get_time_in_ms() + 100;
-	if (_init_semaphore(all_data), _make_philos(all_data))
+	if (_init_semaphore(all_data) || _make_philos(all_data))
 		return (1);
 	return (0);
 }
@@ -68,13 +68,13 @@ static int	_atoui_p(unsigned int *dest, char *str)
 static int	_init_semaphore(t_data *data)
 {
 	sem_unlink("/sem_print");
-	data->sem_print = sem_open("/sem_print", O_CREAT, O_RDWR, 1);
+	data->sem_print = sem_open("/sem_print", O_CREAT, 0644, 1);
 	sem_unlink("/sem_fork");
-	data->sem_fork = sem_open("/sem_fork", O_CREAT, O_RDWR, data->n_philo);
+	data->sem_fork = sem_open("/sem_fork", O_CREAT, 0644, data->n_philo);
 	sem_unlink("/sem_full");
-	data->sem_full = sem_open("/sem_full", O_CREAT, O_RDWR, 0);
+	data->sem_full = sem_open("/sem_full", O_CREAT, 0644, 0);
 	sem_unlink("/sem_end");
-	data->sem_end = sem_open("/sem_end", O_CREAT, O_RDWR, 0);
+	data->sem_end = sem_open("/sem_end", O_CREAT, 0644, 0);
 	if (!data->sem_print || !data->sem_fork \
 		|| !data->sem_full || !data->sem_end)
 		return (ph_error_input(STR_SEM_ERR, STR_PRG_NAME));
@@ -89,24 +89,32 @@ static int	_make_philos(t_data *all_data)
 	if (!all_data->all_philos)
 		return (ph_error_input(STR_MALLOC_ERR, STR_PRG_NAME));
 	i = 0;
-	while (i++ < all_data->n_philo)
+	while (i < all_data->n_philo)
 	{
 		if (_init_philo(&all_data->all_philos[i], (i + 1), all_data))
 			return (1);
+		i++;
 	}
 	return (0);
 }
 
 static int	_init_philo(t_philo *philo, unsigned int id, t_data *all_data)
 {
+	char	*sem_t;
+	char	*sem_n;
+
 	philo->data = all_data;
 	philo->id_philo = id;
 	philo->meal_count = 0;
 	philo->last_meal = all_data->start_time;
-	sem_unlink("/sem_t_meal");
-	philo->sem_t_meal = sem_open("/sem_t_meal", O_CREAT, O_RDWR);
-	sem_unlink("/sem_n_meal");
-	philo->sem_n_meal = sem_open("/sem_n_meal", O_CREAT, O_RDWR);
+	if (name_sem_philo(&sem_t, &sem_n, philo->id_philo))
+		return (1);
+	sem_unlink(sem_t);
+	philo->sem_t_meal = sem_open(sem_t, O_CREAT, 0644, 1);
+	sem_unlink(sem_n);
+	philo->sem_n_meal = sem_open(sem_n, O_CREAT, 0644, 1);
+	free(sem_t);
+	free(sem_n);
 	if (!philo->sem_t_meal || !philo->sem_n_meal)
 		return (ph_error_input(STR_SEM_ERR, STR_PRG_NAME));
 	return (0);

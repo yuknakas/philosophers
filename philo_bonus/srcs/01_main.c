@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:41:43 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/27 16:03:27 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:45:28 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	main(int ac, char **av)
 	
 	err_val = ph_init_all(&all_data, ac, av);
 	if (err_val == 2)
-		return (1);
-	if (err_val ==11)
+		return (ph_error_input(STR_USG, STR_PRG_NAME));
+	if (err_val == 1)
 	{
 		ph_clean_all(&all_data);
 		return (1);

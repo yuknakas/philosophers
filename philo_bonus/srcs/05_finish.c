@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   04_finish.c                                        :+:      :+:    :+:   */
+/*   05_finish.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:13:47 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/27 15:58:25 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:31:58 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,11 @@ void ph_clean_all(t_data *data)
 	i = 0;
 	if (!data->all_philos)
 		return ;
-	while (i++ < data->n_philo)
+	while (i < data->n_philo)
 	{
 		_sem_safe_close(data->all_philos[i].sem_n_meal);
 		_sem_safe_close(data->all_philos[i].sem_t_meal);
+		i++;
 	}
 	free(data->all_philos);
 }

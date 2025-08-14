@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:28 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/06/27 15:56:48 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:30:05 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int		ph_init_all(t_data *all_data, int ac, char **av);
 
 //philos
 int		ph_philo(t_philo *philo);
+int		name_sem_philo(char **dest_t, char **dest_n, unsigned int philo_id);
 
 //finish
 void	*ph_check_all_full(void *arg);
@@ -95,6 +96,8 @@ int		ph_error_input(char *error_str, char *sub_str);
 //utils
 int		ft_isspace(int c);
 int		ft_isdigit(int c);
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+size_t	ft_strlen(const char *s);
 
 //time
 time_t	ph_get_time_in_ms(void);
