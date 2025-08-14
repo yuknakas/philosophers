@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:41:59 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/08/15 07:17:19 by yuknakas         ###   ########.fr       */
+/*   Updated: 2025/08/15 07:20:26 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static int	_make_philos(t_data *all_data)
 			return (1);
 		i++;
 	}
-	all_data->t_think = (all_data->t_die -
+	all_data->t_think = (all_data->t_die - \
 		(all_data->t_eat + all_data->t_sleep)) / 2;
 	return (0);
 }
