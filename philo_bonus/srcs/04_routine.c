@@ -6,7 +6,7 @@
 /*   By: yuknakas <yuknakas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 00:46:14 by yuknakas          #+#    #+#             */
-/*   Updated: 2025/08/15 07:12:55 by yuknakas         ###   ########.fr       */
+/*   Updated: 2026/01/06 14:23:03 by yuknakas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,6 @@ void	thinking(t_philo *philo)
 	if (sim_alive(philo->data))
 		return ;
 	ph_print_status(philo, THINK);
+	usleep(philo->data->t_think * 1000);
 	return ;
 }
